@@ -15,15 +15,16 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-        # O gradlew é gerado automaticamente pelo wrapper, 
-        # mas se você subir sem ele, use 'gradle build' direto:
-      
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
+      # Esta etapa configura o Gradle 8.5 automaticamente
+      # e remove a necessidade do arquivo 'gradlew'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         with:
-          arguments: build
+          gradle-version: '8.5'
+
+      # Executa o comando 'gradle' direto do sistema, não './gradlew'
+      - name: Build with Gradle
+        run: gradle build
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
