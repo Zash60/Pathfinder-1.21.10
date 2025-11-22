@@ -1,0 +1,32 @@
+name: Build Mod
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+        # O gradlew é gerado automaticamente pelo wrapper, 
+        # mas se você subir sem ele, use 'gradle build' direto:
+      
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visualpath-mod
+          path: build/libs/*.jar
