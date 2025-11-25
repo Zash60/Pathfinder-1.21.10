@@ -2,7 +2,6 @@ package com.exemplo.visualpath.mixin;
 
 import com.exemplo.visualpath.VisualPathMod;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
@@ -27,14 +26,14 @@ public class WorldRendererMixin {
 
         // 1. Configurar RenderSystem
         // Usando métodos atualizados para 1.21.10
+        RenderSystem.depthMask(false);
         RenderSystem.disableDepthTest();
-        RenderSystem.disableCull();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         
         // 2. Configurar Shader
         // Usando o método correto para 1.21.10
-        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         
         Tessellator tessellator = Tessellator.getInstance();
         
@@ -65,8 +64,8 @@ public class WorldRendererMixin {
         BufferRenderer.drawWithGlobalProgram(buffer.end());
 
         // 5. Restaurar estado
+        RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
-        RenderSystem.enableCull();
         RenderSystem.disableBlend();
     }
 }
