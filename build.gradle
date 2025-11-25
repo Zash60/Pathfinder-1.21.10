@@ -1,6 +1,6 @@
 plugins {
-    // ALTERE ESTA LINHA: 1.8.1 é uma versão estável mais recente
-    id 'fabric-loom' version '1.14.0-alpha.9' 
+    // Atualize para a versão estável mais recente (ex: 1.7 ou superior)
+    id 'fabric-loom' version '1.7-SNAPSHOT' 
     id 'maven-publish'
 }
 
