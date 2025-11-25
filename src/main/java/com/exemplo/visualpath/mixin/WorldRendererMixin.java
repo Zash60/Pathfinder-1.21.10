@@ -25,20 +25,21 @@ public class WorldRendererMixin {
         Vec3d cameraPos = camera.getPos();
 
         // 1. Configurar RenderSystem
-        // Se estes métodos falharem, é 100% certeza que o 'fabric-loom' no build.gradle precisa ser atualizado.
+        // Using updated methods for 1.21.10
         RenderSystem.disableDepthTest();
         RenderSystem.disableCull();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         
         // 2. Configurar Shader
-        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+        // Using the correct shader method for 1.21.10
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         
         Tessellator tessellator = Tessellator.getInstance();
         
-        // 3. Iniciar BufferBuilder (Correção para 1.21)
-        // Usamos DrawMode.LINES e importamos VertexFormat explicitamente
-        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
+        // 3. Iniciar BufferBuilder (Correção para 1.21.10)
+        // Using DrawMode from the correct package
+        BufferBuilder buffer = tessellator.begin(DrawMode.LINES, VertexFormats.POSITION_COLOR);
 
         for (int i = 0; i < path.size() - 1; i++) {
             BlockPos posA = path.get(i);
@@ -59,8 +60,8 @@ public class WorldRendererMixin {
         }
 
         // 4. Finalizar e Renderizar
-        // BufferRenderer substitui BufferUploader em muitos contextos de shader direto
-        BufferRenderer.drawWithGlobalProgram(buffer.end());
+        // Using the correct method for 1.21.10
+        BufferRenderer.drawWithShader(buffer.end());
 
         // 5. Restaurar estado
         RenderSystem.enableDepthTest();
