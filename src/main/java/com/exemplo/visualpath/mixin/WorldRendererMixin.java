@@ -2,6 +2,7 @@ package com.exemplo.visualpath.mixin;
 
 import com.exemplo.visualpath.VisualPathMod;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
@@ -25,20 +26,20 @@ public class WorldRendererMixin {
         Vec3d cameraPos = camera.getPos();
 
         // 1. Configurar RenderSystem
-        // Using updated methods for 1.21.10
+        // Usando métodos atualizados para 1.21.10
         RenderSystem.disableDepthTest();
         RenderSystem.disableCull();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         
         // 2. Configurar Shader
-        // Using the correct shader method for 1.21.10
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        // Usando o método correto para 1.21.10
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
         
         Tessellator tessellator = Tessellator.getInstance();
         
         // 3. Iniciar BufferBuilder (Correção para 1.21.10)
-        // Using DrawMode from the correct package
+        // Usando DrawMode do pacote correto
         BufferBuilder buffer = tessellator.begin(DrawMode.LINES, VertexFormats.POSITION_COLOR);
 
         for (int i = 0; i < path.size() - 1; i++) {
@@ -60,8 +61,8 @@ public class WorldRendererMixin {
         }
 
         // 4. Finalizar e Renderizar
-        // Using the correct method for 1.21.10
-        BufferRenderer.drawWithShader(buffer.end());
+        // Usando o método correto para 1.21.10
+        BufferRenderer.drawWithGlobalProgram(buffer.end());
 
         // 5. Restaurar estado
         RenderSystem.enableDepthTest();
