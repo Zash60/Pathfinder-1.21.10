@@ -1,6 +1,6 @@
 plugins {
-    // Atualize para a versão estável mais recente (ex: 1.7 ou superior)
-    id 'fabric-loom' version '1.7-SNAPSHOT' 
+    
+    id 'fabric-loom' version '1.13.6' 
     id 'maven-publish'
 }
 
